@@ -35,6 +35,5 @@ int main()
     {
         printf("Invalid String");
     }
-
     return 0;
 }
