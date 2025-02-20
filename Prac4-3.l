@@ -5,9 +5,9 @@
 %}
 %%
 [\n] {l++;}
-[]+ {c+=yyleng;}
+[ \t]+ {c+=yyleng;}
 [a-zA-Z]+ {w++; c+=yyleng;}
-. ;
+. {yyterminate();};
 %%
 int main(){
     printf("Enter a string: ");
