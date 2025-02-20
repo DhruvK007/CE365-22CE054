@@ -211,7 +211,7 @@ int main(int argc, char *argv[])
         if (inComment)
         {
             int end = line.find("*/");
-            if (end != string::npos)
+            if (end != -1)
             {
                 line = line.substr(end + 2);
                 inComment = false;
