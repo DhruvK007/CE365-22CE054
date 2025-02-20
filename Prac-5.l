@@ -10,6 +10,7 @@
 [a-zA-Z_][a-zA-Z_0-9]* {printf("Identifier: %s\n",yytext);}
 ['"'].*['"'] {printf("String: %s\n",yytext);}
 '\'([^\\']|\\[abfnrtv\\'"]|\\[0-7]{1,3}|\\x[0-9A-Fa-f]+)\'' { printf("String: %s\n", yytext); }
+[0-9]+[a-zA-Z_]+ {printf("Invalid: %s\n",yytext);}
 [0-9]+ {printf("Constant: %s\n",yytext);}
 [0-9]+[.][0-9]+ {printf("Constant: %s\n",yytext);}
 [0-9]+[eE][+-]?[0-9]+ {printf("Constant: %s\n",yytext);}
