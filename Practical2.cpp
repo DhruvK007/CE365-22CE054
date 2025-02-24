@@ -18,7 +18,8 @@ int main()
     int nSymbols, testCaseNo;
     cout << "Enter the test case number : ";
     cin >> testCaseNo;
-    cin.ignore();
+    cin.ignore(); // To clear buffer after integer input
+
     if (testCaseNo == 3)
     {
         vector<char> v = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
@@ -54,33 +55,34 @@ int main()
         while (true)
         {
             cout << "\nInput String (type 'exit' to quit): ";
-
             getline(cin, str);
-            if (str == "")
+
+            if (str.empty())
             {
                 cout << "Null String not allowed\n";
                 continue;
             }
-
             if (str == "exit")
                 break;
 
             int state = initialState;
             bool flag = false;
-            for (int i = 0; i < str.length(); i++)
+            for (char c : str)
             {
-                vector<pair<char, int>> temp = DFA[state - 1].transitions;
-                for (int j = 0; j < temp.size(); j++)
+                bool found = false;
+                for (auto trans : DFA[state - 1].transitions)
                 {
-                    if (temp[j].first == str[i])
+                    if (trans.first == c)
                     {
-                        state = temp[j].second;
+                        state = trans.second;
+                        found = true;
                         break;
                     }
-                    if (j == temp.size() - 1)
-                    {
-                        flag = true;
-                    }
+                }
+                if (!found)
+                {
+                    flag = true;
+                    break;
                 }
             }
 
@@ -89,15 +91,8 @@ int main()
                 cout << "Invalid Character found in the input string\n";
                 continue;
             }
-            bool isValid = false;
-            for (int i = 0; i < acceptStates.size(); i++)
-            {
-                if (state == acceptStates[i])
-                {
-                    isValid = true;
-                    break;
-                }
-            }
+
+            bool isValid = (find(acceptStates.begin(), acceptStates.end(), state) != acceptStates.end());
 
             if (isValid)
                 cout << "Valid String\n";
@@ -111,7 +106,6 @@ int main()
         cin >> nSymbols;
 
         vector<char> v;
-
         cout << "Input Symbols : ";
         for (int i = 0; i < nSymbols; i++)
         {
@@ -157,8 +151,7 @@ int main()
         }
 
         vector<State> DFA;
-        cout << "Transition Table" << endl;
-
+        cout << "Transition Table\n";
         for (int i = 1; i <= nStates; i++)
         {
             vector<pair<char, int>> temp;
@@ -178,13 +171,15 @@ int main()
             DFA.push_back(State(i, temp));
         }
 
+        cin.ignore();
+
         string str;
         while (true)
         {
             cout << "\nInput String (type 'exit' to quit): ";
             getline(cin, str);
-            cin.ignore();
-            if (str == "")
+
+            if (str.empty())
             {
                 cout << "Null String not allowed\n";
                 continue;
@@ -194,37 +189,32 @@ int main()
 
             int state = initialState;
             bool flag = false;
-            for (int i = 0; i < str.length(); i++)
+            for (char c : str)
             {
-                vector<pair<char, int>> temp = DFA[state - 1].transitions;
-                for (int j = 0; j < temp.size(); j++)
+                bool found = false;
+                for (auto trans : DFA[state - 1].transitions)
                 {
-                    if (temp[j].first == str[i])
+                    if (trans.first == c)
                     {
-                        state = temp[j].second;
+                        state = trans.second;
+                        found = true;
                         break;
                     }
-                    if (j == temp.size() - 1)
-                    {
-                        flag = true;
-                    }
                 }
-                if (flag)
+                if (!found)
                 {
-                    cout << "Invalid Character found in the input string\n";
-                    continue;
-                }
-            }
-
-            bool isValid = false;
-            for (int i = 0; i < acceptStates.size(); i++)
-            {
-                if (state == acceptStates[i])
-                {
-                    isValid = true;
+                    flag = true;
                     break;
                 }
             }
+
+            if (flag)
+            {
+                cout << "Invalid Character found in the input string\n";
+                continue;
+            }
+
+            bool isValid = (find(acceptStates.begin(), acceptStates.end(), state) != acceptStates.end());
 
             if (isValid)
                 cout << "Valid String\n";

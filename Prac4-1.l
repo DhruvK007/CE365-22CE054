@@ -6,6 +6,7 @@
 [0-9]+ {printf("%s\n", yytext);}
 [a-zA-Z]+ {;}
 [\t\n] {yyterminate();}
+. {;}
 %%
 
 int main(){
