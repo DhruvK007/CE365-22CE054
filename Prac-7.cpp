@@ -1,82 +1,126 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void computeFirst(unordered_map<char, set<string>> &first, unordered_map<char, vector<string>> grammar, char nonTerminal)
+unordered_map<char, vector<string>> grammar = {
+    {'S', {"ABC", "D"}},
+    {'A', {"a", "^"}},
+    {'B', {"b", "^"}},
+    {'C', {"(S)", "c"}},
+    {'D', {"AC"}}};
+
+unordered_map<char, set<char>> FIRST;
+unordered_map<char, set<char>> FOLLOW;
+
+// Compute FIRST sets iteratively.
+void computeFirst()
 {
-    for (auto production : grammar[nonTerminal])
+    for (auto p : grammar)
     {
-        if (production == "^")
+        FIRST[p.first] = {};
+    }
+
+    bool changed = true;
+    while (changed)
+    {
+        changed = false;
+        for (auto p : grammar)
         {
-            first[nonTerminal].insert("^");
-        }
-        else
-        {
-            for (char symbol : production)
+            char A = p.first;
+            for (auto prod : p.second)
             {
-                if (isupper(symbol))
-                { // Non-terminal
-                    computeFirst(first, grammar, symbol);
-                    for (auto f : first[symbol])
+                bool allEps = true;
+                for (char symbol : prod)
+                {
+                    if (!isupper(symbol))
                     {
-                        if (f != "^")
+                        if (FIRST[A].insert(symbol).second)
                         {
-                            first[nonTerminal].insert(f);
+                            changed = true;
                         }
-                    }
-                    if (first[symbol].find("^") == first[symbol].end())
-                    {
+                        allEps = false;
                         break;
                     }
+                    else
+                    {
+                        for (char f : FIRST[symbol])
+                        {
+                            if (f != '^' && FIRST[A].find(f) == FIRST[A].end())
+                            {
+                                FIRST[A].insert(f);
+                                changed = true;
+                            }
+                        }
+                        if (FIRST[symbol].find('^') == FIRST[symbol].end())
+                        {
+                            allEps = false;
+                            break;
+                        }
+                    }
                 }
-                else
-                { // Terminal
-                    first[nonTerminal].insert(string(1, symbol));
-                    break;
+                if (allEps)
+                {
+                    if (FIRST[A].insert('^').second)
+                        changed = true;
                 }
             }
         }
     }
 }
 
-void computeFollow(unordered_map<char, set<string>> &follow, unordered_map<char, set<string>> &first, unordered_map<char, vector<string>> grammar, char nonTerminal)
+void computeFollow()
 {
-    for (auto rule : grammar)
+    for (auto p : grammar)
     {
-        for (auto production : rule.second)
+        FOLLOW[p.first] = {};
+    }
+    FOLLOW['S'].insert('$');
+
+    bool changed = true;
+    while (changed)
+    {
+        changed = false;
+        for (auto p : grammar)
         {
-            int pos = production.find(nonTerminal);
-            if (pos != -1)
+            char A = p.first;
+            for (auto prod : p.second)
             {
-                if (pos + 1 < production.length())
+                for (int i = 0; i < prod.size(); i++)
                 {
-                    char nextSymbol = production[pos + 1];
-                    if (isupper(nextSymbol))
-                    { // Non-terminal
-                        for (auto f : first[nextSymbol])
+                    char symbol = prod[i];
+                    if (isupper(symbol))
+                    { // Nonterminal
+                        bool eps = true;
+                        for (int j = i + 1; j < prod.size() && eps; j++)
                         {
-                            if (f != "^")
+                            eps = false;
+                            char nextSym = prod[j];
+                            if (!isupper(nextSym))
                             {
-                                follow[nonTerminal].insert(f);
+                                if (FOLLOW[symbol].insert(nextSym).second)
+                                    changed = true;
+                            }
+                            else
+                            {
+                                for (char f : FIRST[nextSym])
+                                {
+                                    if (f != '^' && FOLLOW[symbol].find(f) == FOLLOW[symbol].end())
+                                    {
+                                        FOLLOW[symbol].insert(f);
+                                        changed = true;
+                                    }
+                                }
+                                if (FIRST[nextSym].find('^') != FIRST[nextSym].end())
+                                    eps = true;
                             }
                         }
-                        if (first[nextSymbol].find("^") != first[nextSymbol].end())
+                        if (eps)
                         {
-                            for (auto f : follow[rule.first])
+                            for (char f : FOLLOW[A])
                             {
-                                follow[nonTerminal].insert(f);
+                                if (FOLLOW[symbol].insert(f).second)
+                                    changed = true;
                             }
                         }
-                    }
-                    else
-                    { // Terminal
-                        follow[nonTerminal].insert(string(1, nextSymbol));
-                    }
-                }
-                else
-                {
-                    for (auto f : follow[rule.first])
-                    {
-                        follow[nonTerminal].insert(f);
                     }
                 }
             }
@@ -86,46 +130,26 @@ void computeFollow(unordered_map<char, set<string>> &follow, unordered_map<char,
 
 int main()
 {
-    unordered_map<char, vector<string>> grammar = {
-        {'S', {"ABC", "D"}},
-        {'A', {"a", "^"}},
-        {'B', {"b", "^"}},
-        {'C', {"(S)", "c"}},
-        {'D', {"AC"}}};
+    computeFirst();
 
-    unordered_map<char, set<string>> first, follow;
-
-    for (auto rule : grammar)
+    cout << "FIRST sets:\n";
+    for (auto p : FIRST)
     {
-        computeFirst(first, grammar, rule.first);
+        cout << p.first << " : { ";
+        for (char c : p.second)
+            cout << c << " ";
+        cout << "}\n";
     }
 
-    follow['S'].insert("$"); // $ is the end marker
-    for (auto rule : grammar)
-    {
-        computeFollow(follow, first, grammar, rule.first);
-    }
+    computeFollow();
 
-    cout << "First sets:\n";
-    for (auto f : first)
+    cout << "\nFOLLOW sets:\n";
+    for (auto p : FOLLOW)
     {
-        cout << f.first << ": ";
-        for (auto s : f.second)
-        {
-            cout << s << " ";
-        }
-        cout << endl;
-    }
-
-    cout << "\nFollow sets:\n";
-    for (auto f : follow)
-    {
-        cout << f.first << ": ";
-        for (auto s : f.second)
-        {
-            cout << s << " ";
-        }
-        cout << endl;
+        cout << p.first << " : { ";
+        for (char c : p.second)
+            cout << c << " ";
+        cout << "}\n";
     }
 
     return 0;
