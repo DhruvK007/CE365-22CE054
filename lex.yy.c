@@ -261,9 +261,6 @@ static void yy_flex_free YY_PROTO(( void * ));
 
 #define YY_AT_BOL() (yy_current_buffer->yy_at_bol)
 
-
-#define yywrap() 1
-#define YY_SKIP_YYWRAP
 typedef unsigned char YY_CHAR;
 FILE *yyin = (FILE *) 0, *yyout = (FILE *) 0;
 typedef int yy_state_type;
@@ -285,29 +282,29 @@ static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
 	*yy_cp = '\0'; \
 	yy_c_buf_p = yy_cp;
 
-#define YY_NUM_RULES 8
-#define YY_END_OF_BUFFER 9
+#define YY_NUM_RULES 6
+#define YY_END_OF_BUFFER 7
 static yyconst short int yy_accept[12] =
     {   0,
-        0,    0,    9,    7,    6,    3,    4,    5,    1,    2,
+        0,    0,    7,    5,    2,    3,    4,    1,    2,    1,
         0
     } ;
 
 static yyconst int yy_ec[256] =
     {   0,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    2,
+        1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    2,    1,    1,    1,    1,    1,    1,    1,    4,
+        4,    4,    4,    1,    4,    1,    4,    5,    5,    5,
+        5,    5,    5,    5,    5,    5,    5,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    3,    4,    1,    1,
+        1,    1,    1,    4,    1,    1,    1,    1,    1,    1,
 
-        5,    1,    1,    1,    6,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    7,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -325,33 +322,33 @@ static yyconst int yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static yyconst int yy_meta[8] =
+static yyconst int yy_meta[6] =
     {   0,
-        1,    1,    1,    1,    1,    1,    1
+        1,    2,    1,    1,    3
     } ;
 
-static yyconst short int yy_base[12] =
+static yyconst short int yy_base[14] =
     {   0,
-        0,    0,    8,    9,    9,    9,    9,    9,    9,    9,
-        9
+        0,    0,    8,    9,    0,    9,    9,    0,    0,    0,
+        9,    5,    3
     } ;
 
-static yyconst short int yy_def[12] =
+static yyconst short int yy_def[14] =
     {   0,
-       11,    1,   11,   11,   11,   11,   11,   11,   11,   11,
-        0
+       11,    1,   11,   11,   12,   11,   11,   13,   12,   13,
+        0,   11,   11
     } ;
 
-static yyconst short int yy_nxt[17] =
+static yyconst short int yy_nxt[15] =
     {   0,
-        4,    5,    6,    7,    8,    9,   10,   11,    3,   11,
-       11,   11,   11,   11,   11,   11
+        4,    5,    6,    7,    8,   10,    9,   11,    3,   11,
+       11,   11,   11,   11
     } ;
 
-static yyconst short int yy_chk[17] =
+static yyconst short int yy_chk[15] =
     {   0,
-        1,    1,    1,    1,    1,    1,    1,    3,   11,   11,
-       11,   11,   11,   11,   11,   11
+        1,    1,    1,    1,    1,   13,   12,    3,   11,   11,
+       11,   11,   11,   11
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -365,12 +362,12 @@ static char *yy_last_accepting_cpos;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "Prac-9.l"
+#line 1 "prac10.l"
 #define INITIAL 0
-#line 3 "Prac-9.l"
-	#include<stdio.h>
-	#include "Prac-9.tab.h" 
-#line 374 "lex.yy.c"
+#line 2 "prac10.l"
+#include "prac10.tab.h"
+
+#line 371 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -521,9 +518,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 7 "Prac-9.l"
+#line 6 "prac10.l"
 
-#line 527 "lex.yy.c"
+
+#line 525 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -608,45 +606,35 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 8 "Prac-9.l"
-{return i;}
+#line 8 "prac10.l"
+{ yylval.fval = atoi(yytext); return NUMBER; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 9 "Prac-9.l"
-{return t;} 
+#line 9 "prac10.l"
+{ /* Ignore whitespace */ }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 10 "Prac-9.l"
-{return a;} 
+#line 10 "prac10.l"
+{ return 0; }  
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 11 "Prac-9.l"
-{return b;} 
+#line 11 "prac10.l"
+{ return yytext[0]; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 12 "Prac-9.l"
-{return e;} 
+#line 12 "prac10.l"
+{ printf("Invalid character: %s\n", yytext); return 0; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 13 "Prac-9.l"
-{return NL;} 
-	YY_BREAK
-case 7:
-YY_RULE_SETUP
-#line 14 "Prac-9.l"
-{return yytext[0];} 
-	YY_BREAK
-case 8:
-YY_RULE_SETUP
-#line 15 "Prac-9.l"
+#line 14 "prac10.l"
 ECHO;
 	YY_BREAK
-#line 650 "lex.yy.c"
+#line 638 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1532,9 +1520,9 @@ int main()
 	return 0;
 	}
 #endif
-#line 15 "Prac-9.l"
+#line 14 "prac10.l"
 
-int yywrap1() 
-{ 
-return 1; 
+
+int yywrap() {
+    return 1;
 }
